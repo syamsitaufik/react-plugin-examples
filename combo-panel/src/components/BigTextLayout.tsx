@@ -55,9 +55,9 @@ export class BigTextLayout extends PureComponent<Props> {
               timeRange={timeRange}
               width={width}
               height={height}
-              showBars={false}
-              showLines={true}
-              showPoints={false}
+              showBars={options.showBars}
+              showLines={options.showLines}
+              showPoints={options.showPoints}
             />
           </div>
           <div style={{ width: '40%', height: '100%' }}>

@@ -11,6 +11,7 @@ import { ValueOptions } from './Gauge/ValueOptions';
 
 import { ComboOptions, SingleStatValueOptions } from '../types';
 import { GaugeOptionsEditor } from './Gauge/GaugeOptionsEditor';
+import { GraphOptions } from './Graph/GraphOptions';
 
 export class ComboPanelEditor extends PureComponent<
   PanelEditorProps<ComboOptions>
@@ -35,8 +36,8 @@ export class ComboPanelEditor extends PureComponent<
     // and Text (size color etc)
     // Options for resizing the sections, choose layout? ✅
     // Combine Thresholds and text (+ color)
-
-    const { layout, valueOptions } = this.props.options;
+    const { options, onChange } = this.props;
+    const { layout, valueOptions } = options;
 
     return (
       <>
@@ -51,14 +52,14 @@ export class ComboPanelEditor extends PureComponent<
             options={valueOptions}
             onChange={valueOptions => this.onValueOptionsChanged(valueOptions)}
           />
-          <GaugeOptionsEditor
-            options={this.props.options}
-            onChange={this.props.onChange}
-          />
+          <GaugeOptionsEditor options={options} onChange={onChange} />
           <ThresholdsEditor
             thresholds={this.props.options.thresholds}
             onChange={thresholds => this.onThresholdsChanged(thresholds)}
           />
+        </PanelOptionsGrid>
+        <PanelOptionsGrid>
+          <GraphOptions options={options} onChange={onChange} />
         </PanelOptionsGrid>
       </>
     );

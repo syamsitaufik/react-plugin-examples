@@ -86,138 +86,6 @@ define(["@grafana/ui","react"], function(__WEBPACK_EXTERNAL_MODULE__grafana_ui__
 /************************************************************************/
 /******/ ({
 
-/***/ "./components/BigGraphLayout.tsx":
-/*!***************************************!*\
-  !*** ./components/BigGraphLayout.tsx ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.BigGraphLayout = undefined;
-
-var _react = __webpack_require__(/*! react */ "react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __extends = undefined && undefined.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var BigGraphLayout =
-/** @class */
-function (_super) {
-  __extends(BigGraphLayout, _super);
-
-  function BigGraphLayout() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
-
-  BigGraphLayout.prototype.render = function () {
-    var _a = this.props,
-        onInterpolate = _a.onInterpolate,
-        options = _a.options,
-        timeSeries = _a.timeSeries,
-        timeRange = _a.timeRange,
-        width = _a.width,
-        height = _a.height;
-    var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
-    var prefix = onInterpolate(options.valueOptions.prefix);
-    var suffix = onInterpolate(options.valueOptions.suffix);
-    return _react2.default.createElement("div", {
-      style: {
-        display: 'flex',
-        width: '100%',
-        height: '100%'
-      }
-    }, _react2.default.createElement("div", {
-      style: {
-        width: '70%'
-      }
-    }, _react2.default.createElement(_ui.Graph, {
-      timeSeries: timeSeries,
-      timeRange: timeRange,
-      width: width,
-      height: height,
-      showBars: false,
-      showLines: true,
-      showPoints: false
-    })), _react2.default.createElement("div", {
-      style: {
-        width: '30%'
-      }
-    }, _react2.default.createElement("div", {
-      style: {
-        height: '30%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: '48px',
-        overflow: 'hidden',
-        whiteSpace: 'nowrap'
-      }
-    }, "Server ok"), _react2.default.createElement("div", {
-      style: {
-        height: '50%'
-      }
-    }, _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
-      return _react2.default.createElement(_ui.Gauge, {
-        value: gaugeValue,
-        width: width,
-        height: height / 2,
-        prefix: prefix,
-        suffix: suffix,
-        unit: options.valueOptions.unit,
-        decimals: options.valueOptions.decimals,
-        thresholds: options.thresholds,
-        valueMappings: options.valueMappings,
-        showThresholdLabels: options.showThresholdLabels,
-        showThresholdMarkers: options.showThresholdMarkers,
-        minValue: options.minValue,
-        maxValue: options.maxValue,
-        theme: theme
-      });
-    }))));
-  };
-
-  return BigGraphLayout;
-}(_react.PureComponent);
-
-exports.BigGraphLayout = BigGraphLayout;
-
-/***/ }),
-
 /***/ "./components/BigTextLayout.tsx":
 /*!**************************************!*\
   !*** ./components/BigTextLayout.tsx ***!
@@ -323,9 +191,9 @@ function (_super) {
       timeRange: timeRange,
       width: width,
       height: height,
-      showBars: false,
-      showLines: true,
-      showPoints: false
+      showBars: options.showBars,
+      showLines: options.showLines,
+      showPoints: options.showPoints
     })), _react2.default.createElement("div", {
       style: {
         width: '40%',
@@ -383,7 +251,7 @@ var _BigTextLayout = __webpack_require__(/*! ./BigTextLayout */ "./components/Bi
 
 var _BigGaugeLayout = __webpack_require__(/*! ./Gauge/BigGaugeLayout */ "./components/Gauge/BigGaugeLayout.tsx");
 
-var _BigGraphLayout = __webpack_require__(/*! ./BigGraphLayout */ "./components/BigGraphLayout.tsx");
+var _BigGraphLayout = __webpack_require__(/*! ./Graph/BigGraphLayout */ "./components/Graph/BigGraphLayout.tsx");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -510,6 +378,8 @@ var _ValueOptions = __webpack_require__(/*! ./Gauge/ValueOptions */ "./component
 
 var _GaugeOptionsEditor = __webpack_require__(/*! ./Gauge/GaugeOptionsEditor */ "./components/Gauge/GaugeOptionsEditor.tsx");
 
+var _GraphOptions = __webpack_require__(/*! ./Graph/GraphOptions */ "./components/Graph/GraphOptions.tsx");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var __extends = undefined && undefined.__extends || function () {
@@ -584,15 +454,17 @@ function (_super) {
   }
 
   ComboPanelEditor.prototype.render = function () {
-    // Options for Gauge (thresholds etc), Graph (lines, bars, points)
+    var _this = this; // Options for Gauge (thresholds etc), Graph (lines, bars, points)
     // and Text (size color etc)
     // Options for resizing the sections, choose layout? ✅
     // Combine Thresholds and text (+ color)
-    var _this = this;
 
-    var _a = this.props.options,
-        layout = _a.layout,
-        valueOptions = _a.valueOptions;
+
+    var _a = this.props,
+        options = _a.options,
+        onChange = _a.onChange;
+    var layout = options.layout,
+        valueOptions = options.valueOptions;
     return _react2.default.createElement(_react2.default.Fragment, null, _react2.default.createElement(_ui.PanelOptionsGrid, null, _react2.default.createElement(_LayoutOptions.LayoutOptions, {
       onChange: function onChange(layout) {
         return _this.onLayoutChange(layout);
@@ -604,13 +476,16 @@ function (_super) {
         return _this.onValueOptionsChanged(valueOptions);
       }
     }), _react2.default.createElement(_GaugeOptionsEditor.GaugeOptionsEditor, {
-      options: this.props.options,
-      onChange: this.props.onChange
+      options: options,
+      onChange: onChange
     }), _react2.default.createElement(_ui.ThresholdsEditor, {
       thresholds: this.props.options.thresholds,
       onChange: function onChange(thresholds) {
         return _this.onThresholdsChanged(thresholds);
       }
+    })), _react2.default.createElement(_ui.PanelOptionsGrid, null, _react2.default.createElement(_GraphOptions.GraphOptions, {
+      options: options,
+      onChange: onChange
     })));
   };
 
@@ -719,9 +594,9 @@ function (_super) {
       timeRange: timeRange,
       width: width,
       height: height,
-      showBars: false,
-      showLines: true,
-      showPoints: false
+      showBars: options.showBars,
+      showLines: options.showLines,
+      showPoints: options.showPoints
     }))), _react2.default.createElement("div", {
       style: {
         width: '50%',
@@ -1105,6 +980,266 @@ function (_super) {
 }(_react.PureComponent);
 
 exports.ValueOptions = ValueOptions;
+
+/***/ }),
+
+/***/ "./components/Graph/BigGraphLayout.tsx":
+/*!*********************************************!*\
+  !*** ./components/Graph/BigGraphLayout.tsx ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BigGraphLayout = undefined;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __extends = undefined && undefined.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var BigGraphLayout =
+/** @class */
+function (_super) {
+  __extends(BigGraphLayout, _super);
+
+  function BigGraphLayout() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  BigGraphLayout.prototype.render = function () {
+    var _a = this.props,
+        onInterpolate = _a.onInterpolate,
+        options = _a.options,
+        timeSeries = _a.timeSeries,
+        timeRange = _a.timeRange,
+        width = _a.width,
+        height = _a.height;
+    var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
+    var prefix = onInterpolate(options.valueOptions.prefix);
+    var suffix = onInterpolate(options.valueOptions.suffix);
+    return _react2.default.createElement("div", {
+      style: {
+        display: 'flex',
+        width: '100%',
+        height: '100%'
+      }
+    }, _react2.default.createElement("div", {
+      style: {
+        width: '70%'
+      }
+    }, _react2.default.createElement(_ui.Graph, {
+      timeSeries: timeSeries,
+      timeRange: timeRange,
+      width: width,
+      height: height,
+      showBars: options.showBars,
+      showLines: options.showLines,
+      showPoints: options.showPoints
+    })), _react2.default.createElement("div", {
+      style: {
+        width: '30%'
+      }
+    }, _react2.default.createElement("div", {
+      style: {
+        height: '30%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '48px',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap'
+      }
+    }, "Server ok"), _react2.default.createElement("div", {
+      style: {
+        height: '50%'
+      }
+    }, _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
+      return _react2.default.createElement(_ui.Gauge, {
+        value: gaugeValue,
+        width: width,
+        height: height / 2,
+        prefix: prefix,
+        suffix: suffix,
+        unit: options.valueOptions.unit,
+        decimals: options.valueOptions.decimals,
+        thresholds: options.thresholds,
+        valueMappings: options.valueMappings,
+        showThresholdLabels: options.showThresholdLabels,
+        showThresholdMarkers: options.showThresholdMarkers,
+        minValue: options.minValue,
+        maxValue: options.maxValue,
+        theme: theme
+      });
+    }))));
+  };
+
+  return BigGraphLayout;
+}(_react.PureComponent);
+
+exports.BigGraphLayout = BigGraphLayout;
+
+/***/ }),
+
+/***/ "./components/Graph/GraphOptions.tsx":
+/*!*******************************************!*\
+  !*** ./components/Graph/GraphOptions.tsx ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GraphOptions = undefined;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __extends = undefined && undefined.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __assign = undefined && undefined.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var GraphOptions =
+/** @class */
+function (_super) {
+  __extends(GraphOptions, _super);
+
+  function GraphOptions() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+    _this.labelWidth = 8;
+
+    _this.onToggleBars = function () {
+      return _this.props.onChange(__assign({}, _this.props.options, {
+        showBars: !_this.props.options.showBars
+      }));
+    };
+
+    _this.onToggleLines = function () {
+      return _this.props.onChange(__assign({}, _this.props.options, {
+        showLines: !_this.props.options.showLines
+      }));
+    };
+
+    _this.onTogglePoints = function () {
+      return _this.props.onChange(__assign({}, _this.props.options, {
+        showPoints: !_this.props.options.showPoints
+      }));
+    };
+
+    return _this;
+  }
+
+  GraphOptions.prototype.render = function () {
+    var _a = this.props.options,
+        showBars = _a.showBars,
+        showLines = _a.showLines,
+        showPoints = _a.showPoints;
+    return _react2.default.createElement(_ui.PanelOptionsGroup, {
+      title: "Graph"
+    }, _react2.default.createElement(_ui.Switch, {
+      label: "Show bars",
+      labelClass: "width-" + this.labelWidth,
+      checked: showBars,
+      onChange: this.onToggleBars
+    }), _react2.default.createElement(_ui.Switch, {
+      label: "Show lines",
+      labelClass: "width-" + this.labelWidth,
+      checked: showLines,
+      onChange: this.onToggleLines
+    }), _react2.default.createElement(_ui.Switch, {
+      label: "Show points",
+      labelClass: "width-" + this.labelWidth,
+      checked: showPoints,
+      onChange: this.onTogglePoints
+    }));
+  };
+
+  return GraphOptions;
+}(_react.PureComponent);
+
+exports.GraphOptions = GraphOptions;
 
 /***/ }),
 

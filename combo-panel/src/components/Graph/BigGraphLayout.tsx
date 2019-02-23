@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { LayoutProps } from '../types';
+import { LayoutProps } from '../../types';
 import { Gauge, Graph, ThemeContext } from '@grafana/ui';
 
 interface Props extends LayoutProps {}
@@ -27,9 +27,9 @@ export class BigGraphLayout extends PureComponent<Props> {
             timeRange={timeRange}
             width={width}
             height={height}
-            showBars={false}
-            showLines={true}
-            showPoints={false}
+            showBars={options.showBars}
+            showLines={options.showLines}
+            showPoints={options.showPoints}
           />
         </div>
         <div style={{ width: '30%' }}>
