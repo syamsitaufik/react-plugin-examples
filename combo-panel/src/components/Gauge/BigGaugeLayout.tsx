@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { LayoutProps } from '../types';
+import { LayoutProps } from '../../types';
 import { Gauge, Graph, ThemeContext } from '@grafana/ui';
 
 interface Props extends LayoutProps {}

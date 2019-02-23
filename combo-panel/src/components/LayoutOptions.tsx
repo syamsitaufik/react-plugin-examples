@@ -21,7 +21,6 @@ export class LayoutOptions extends PureComponent<Props> {
       <PanelOptionsGroup title="Layout">
         <div
           style={{
-            width: '50%',
             display: 'flex',
           }}
         >
@@ -39,6 +38,7 @@ export class LayoutOptions extends PureComponent<Props> {
                   backgroundColor: isActive && '#393737',
                   cursor: isActive ? 'auto' : 'pointer',
                   pointerEvents: isActive ? 'none' : 'auto',
+                  maxWidth: '30%',
                 }}
               >
                 {layout.label}

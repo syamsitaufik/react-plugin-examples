@@ -3,7 +3,7 @@ import { NullValueMode, PanelProps, processTimeSeries } from '@grafana/ui';
 
 import { ComboOptions } from '../types';
 import { BigTextLayout } from './BigTextLayout';
-import { BigGaugeLayout } from './BigGaugeLayout';
+import { BigGaugeLayout } from './Gauge/BigGaugeLayout';
 import { BigGraphLayout } from './BigGraphLayout';
 
 interface Props extends PanelProps<ComboOptions> {}
