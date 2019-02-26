@@ -71388,17 +71388,18 @@ function (_super) {
 
   RssPanelEditor.prototype.render = function () {
     var feedUrl = this.state.feedUrl;
-    return _react2.default.createElement(_react2.default.Fragment, null, _react2.default.createElement(_ui.PanelOptionsGrid, null, _react2.default.createElement(_ui.PanelOptionsGroup, {
+    return _react2.default.createElement(_react2.default.Fragment, null, _react2.default.createElement(_ui.PanelOptionsGroup, {
       title: "Feed"
     }, _react2.default.createElement("div", {
       className: "gf-form"
     }, _react2.default.createElement(_ui.FormField, {
       label: "Feed url",
       labelWidth: 6,
+      inputWidth: 25,
       value: feedUrl,
       onChange: this.onFeedUrlChange,
       onBlur: this.onUpdatePanel
-    })))));
+    }))));
   };
 
   return RssPanelEditor;

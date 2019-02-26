@@ -180,7 +180,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@grafana/ui@6.0.0-alpha.0":
+"@grafana/ui@1.0.0":
   version "6.0.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-6.0.0-alpha.0.tgz#dd9433554de2a3b199bd530db54288033cacfd91"
   integrity sha512-v4PBeX3FkwyATBS5+ob5fNrcGOAYYDD/HoEIz+vATXrHYGuuzIy+4jypj5U3cl7XFGT3IthwtB6VU7A0eUOWng==

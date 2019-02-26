@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
   FormField,
-  PanelOptionsGrid,
   PanelOptionsGroup,
   PanelEditorProps,
 } from '@grafana/ui';
@@ -33,19 +32,18 @@ export class RssPanelEditor extends PureComponent<
 
     return (
       <>
-        <PanelOptionsGrid>
-          <PanelOptionsGroup title="Feed">
-            <div className="gf-form">
-              <FormField
-                label="Feed url"
-                labelWidth={6}
-                value={feedUrl}
-                onChange={this.onFeedUrlChange}
-                onBlur={this.onUpdatePanel}
-              />
-            </div>
-          </PanelOptionsGroup>
-        </PanelOptionsGrid>
+        <PanelOptionsGroup title="Feed">
+          <div className="gf-form">
+            <FormField
+              label="Feed url"
+              labelWidth={6}
+              inputWidth={25}
+              value={feedUrl}
+              onChange={this.onFeedUrlChange}
+              onBlur={this.onUpdatePanel}
+            />
+          </div>
+        </PanelOptionsGroup>
       </>
     );
   }
