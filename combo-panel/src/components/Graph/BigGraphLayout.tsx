@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
+import { Gauge, Graph, ValueMapping } from '@grafana/ui';
+
+import { Text } from '../Text/Text';
+
 import { LayoutProps } from '../../types';
-import { Gauge, Graph, ThemeContext, ValueMapping } from '@grafana/ui';
 
 interface Props extends LayoutProps {}
 
@@ -13,6 +16,9 @@ export class BigGraphLayout extends PureComponent<Props> {
       timeRange,
       width,
       height,
+      valueMappings,
+      theme,
+      thresholds,
     } = this.props;
 
     const gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
@@ -33,7 +39,11 @@ export class BigGraphLayout extends PureComponent<Props> {
           />
         </div>
         <div style={{ width: '30%' }}>
-          <div
+          <Text
+            value={gaugeValue}
+            thresholds={thresholds}
+            valueMappings={valueMappings}
+            theme={theme}
             style={{
               height: '30%',
               display: 'flex',
@@ -43,32 +53,24 @@ export class BigGraphLayout extends PureComponent<Props> {
               overflow: 'hidden',
               whiteSpace: 'nowrap',
             }}
-          >
-            Server ok
-          </div>
+          />
           <div style={{ height: '50%' }}>
-            <ThemeContext.Consumer>
-              {theme => {
-                return (
-                  <Gauge
-                    value={gaugeValue}
-                    width={width}
-                    height={height / 2}
-                    prefix={prefix}
-                    suffix={suffix}
-                    unit={options.valueOptions.unit}
-                    decimals={options.valueOptions.decimals}
-                    thresholds={options.thresholds}
-                    valueMappings={[] as ValueMapping[]}
-                    showThresholdLabels={options.showThresholdLabels}
-                    showThresholdMarkers={options.showThresholdMarkers}
-                    minValue={options.minValue}
-                    maxValue={options.maxValue}
-                    theme={theme}
-                  />
-                );
-              }}
-            </ThemeContext.Consumer>
+            <Gauge
+              value={gaugeValue}
+              width={width}
+              height={height / 2}
+              prefix={prefix}
+              suffix={suffix}
+              unit={options.valueOptions.unit}
+              decimals={options.valueOptions.decimals}
+              thresholds={options.thresholds}
+              valueMappings={[] as ValueMapping[]}
+              showThresholdLabels={options.showThresholdLabels}
+              showThresholdMarkers={options.showThresholdMarkers}
+              minValue={options.minValue}
+              maxValue={options.maxValue}
+              theme={theme}
+            />
           </div>
         </div>
       </div>

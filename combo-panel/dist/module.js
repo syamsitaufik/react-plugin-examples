@@ -399,6 +399,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 
+var _Text = __webpack_require__(/*! ../Text/Text */ "./components/Text/Text.tsx");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var __extends = undefined && undefined.__extends || function () {
@@ -444,7 +446,9 @@ function (_super) {
         timeRange = _a.timeRange,
         width = _a.width,
         height = _a.height,
-        theme = _a.theme;
+        theme = _a.theme,
+        thresholds = _a.thresholds,
+        valueMappings = _a.valueMappings;
     var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
     var prefix = onInterpolate(options.valueOptions.prefix);
     var suffix = onInterpolate(options.valueOptions.suffix);
@@ -458,7 +462,7 @@ function (_super) {
       style: {
         width: '50%'
       }
-    }, _react2.default.createElement("div", {
+    }, _react2.default.createElement(_Text.Text, {
       style: {
         height: '30%',
         display: 'flex',
@@ -467,7 +471,11 @@ function (_super) {
         fontSize: '48px',
         overflow: 'hidden',
         whiteSpace: 'nowrap'
-      }
+      },
+      theme: theme,
+      thresholds: thresholds,
+      valueMappings: valueMappings,
+      value: gaugeValue
     }, "Server ok"), _react2.default.createElement("div", {
       style: {
         height: '70%'
@@ -885,6 +893,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 
+var _Text = __webpack_require__(/*! ../Text/Text */ "./components/Text/Text.tsx");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var __extends = undefined && undefined.__extends || function () {
@@ -929,7 +939,10 @@ function (_super) {
         timeSeries = _a.timeSeries,
         timeRange = _a.timeRange,
         width = _a.width,
-        height = _a.height;
+        height = _a.height,
+        valueMappings = _a.valueMappings,
+        theme = _a.theme,
+        thresholds = _a.thresholds;
     var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
     var prefix = onInterpolate(options.valueOptions.prefix);
     var suffix = onInterpolate(options.valueOptions.suffix);
@@ -955,7 +968,11 @@ function (_super) {
       style: {
         width: '30%'
       }
-    }, _react2.default.createElement("div", {
+    }, _react2.default.createElement(_Text.Text, {
+      value: gaugeValue,
+      thresholds: thresholds,
+      valueMappings: valueMappings,
+      theme: theme,
       style: {
         height: '30%',
         display: 'flex',
@@ -965,27 +982,25 @@ function (_super) {
         overflow: 'hidden',
         whiteSpace: 'nowrap'
       }
-    }, "Server ok"), _react2.default.createElement("div", {
+    }), _react2.default.createElement("div", {
       style: {
         height: '50%'
       }
-    }, _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
-      return _react2.default.createElement(_ui.Gauge, {
-        value: gaugeValue,
-        width: width,
-        height: height / 2,
-        prefix: prefix,
-        suffix: suffix,
-        unit: options.valueOptions.unit,
-        decimals: options.valueOptions.decimals,
-        thresholds: options.thresholds,
-        valueMappings: [],
-        showThresholdLabels: options.showThresholdLabels,
-        showThresholdMarkers: options.showThresholdMarkers,
-        minValue: options.minValue,
-        maxValue: options.maxValue,
-        theme: theme
-      });
+    }, _react2.default.createElement(_ui.Gauge, {
+      value: gaugeValue,
+      width: width,
+      height: height / 2,
+      prefix: prefix,
+      suffix: suffix,
+      unit: options.valueOptions.unit,
+      decimals: options.valueOptions.decimals,
+      thresholds: options.thresholds,
+      valueMappings: [],
+      showThresholdLabels: options.showThresholdLabels,
+      showThresholdMarkers: options.showThresholdMarkers,
+      minValue: options.minValue,
+      maxValue: options.maxValue,
+      theme: theme
     }))));
   };
 
@@ -1291,37 +1306,6 @@ function (_super) {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  BigTextLayout.prototype.getFontColor = function (value) {
-    var _a = this.props,
-        thresholds = _a.thresholds,
-        theme = _a.theme;
-
-    if (thresholds.length === 1) {
-      return (0, _ui.getColorFromHexRgbOrName)(thresholds[0].color, theme.type);
-    }
-
-    var atThreshold = thresholds.filter(function (threshold) {
-      return value === threshold.value;
-    })[0];
-
-    if (atThreshold) {
-      return (0, _ui.getColorFromHexRgbOrName)(atThreshold.color, theme.type);
-    }
-
-    var belowThreshold = thresholds.filter(function (threshold) {
-      return value > threshold.value;
-    });
-
-    if (belowThreshold.length > 0) {
-      var nearestThreshold = belowThreshold.sort(function (t1, t2) {
-        return t2.value - t1.value;
-      })[0];
-      return (0, _ui.getColorFromHexRgbOrName)(nearestThreshold.color, theme.type);
-    }
-
-    return _ui.BasicGaugeColor.Red;
-  };
-
   BigTextLayout.prototype.render = function () {
     var _a = this.props,
         onInterpolate = _a.onInterpolate,
@@ -1331,20 +1315,11 @@ function (_super) {
         width = _a.width,
         height = _a.height,
         valueMappings = _a.valueMappings,
-        theme = _a.theme;
+        theme = _a.theme,
+        thresholds = _a.thresholds;
     var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
     var prefix = onInterpolate(options.valueOptions.prefix);
     var suffix = onInterpolate(options.valueOptions.suffix);
-    var text = '';
-
-    if (valueMappings.length > 0) {
-      var valueMappedValue = (0, _ui.getMappedValue)(valueMappings, gaugeValue);
-
-      if (valueMappedValue) {
-        text = valueMappedValue.text;
-      }
-    }
-
     return _react2.default.createElement("div", {
       style: {
         display: 'flex',
@@ -1362,10 +1337,12 @@ function (_super) {
         fontSize: '60px',
         textAlign: 'center',
         overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        color: this.getFontColor(gaugeValue)
+        whiteSpace: 'nowrap'
       },
-      text: text
+      valueMappings: valueMappings,
+      thresholds: thresholds,
+      value: gaugeValue,
+      theme: theme
     })), _react2.default.createElement("div", {
       style: {
         height: '60%',
@@ -1435,15 +1412,102 @@ var _react = __webpack_require__(/*! react */ "react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Text = exports.Text = function Text(_a) {
-  var style = _a.style,
-      text = _a.text;
-  return _react2.default.createElement("div", {
-    style: style
-  }, text);
-};
+var __extends = undefined && undefined.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var Text =
+/** @class */
+function (_super) {
+  __extends(Text, _super);
+
+  function Text() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Text.prototype.getFontColor = function (value) {
+    var _a = this.props,
+        thresholds = _a.thresholds,
+        theme = _a.theme;
+
+    if (thresholds.length === 1) {
+      return (0, _ui.getColorFromHexRgbOrName)(thresholds[0].color, theme.type);
+    }
+
+    var atThreshold = thresholds.filter(function (threshold) {
+      return value === threshold.value;
+    })[0];
+
+    if (atThreshold) {
+      return (0, _ui.getColorFromHexRgbOrName)(atThreshold.color, theme.type);
+    }
+
+    var belowThreshold = thresholds.filter(function (threshold) {
+      return value > threshold.value;
+    });
+
+    if (belowThreshold.length > 0) {
+      var nearestThreshold = belowThreshold.sort(function (t1, t2) {
+        return t2.value - t1.value;
+      })[0];
+      return (0, _ui.getColorFromHexRgbOrName)(nearestThreshold.color, theme.type);
+    }
+
+    return _ui.BasicGaugeColor.Red;
+  };
+
+  Text.prototype.render = function () {
+    var _a = this.props,
+        valueMappings = _a.valueMappings,
+        value = _a.value,
+        style = _a.style;
+    var text = '';
+
+    if (valueMappings.length > 0) {
+      var valueMappedValue = (0, _ui.getMappedValue)(valueMappings, value);
+
+      if (valueMappedValue) {
+        text = valueMappedValue.text;
+      }
+    }
+
+    return _react2.default.createElement("div", {
+      style: Object.assign(style, {
+        color: this.getFontColor(value)
+      })
+    }, text);
+  };
+
+  return Text;
+}(_react.PureComponent);
+
+exports.Text = Text;
 
 /***/ }),
 

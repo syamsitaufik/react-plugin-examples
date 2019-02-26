@@ -1,13 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  BasicGaugeColor,
-  Gauge,
-  getColorFromHexRgbOrName,
-  getMappedValue,
-  Graph,
-  TimeSeriesValue,
-  ValueMapping,
-} from '@grafana/ui';
+import { Gauge, Graph, ValueMapping } from '@grafana/ui';
 
 import { Text } from './Text';
 
@@ -16,34 +8,6 @@ import { LayoutProps } from '../../types';
 interface Props extends LayoutProps {}
 
 export class BigTextLayout extends PureComponent<Props> {
-  getFontColor(value: TimeSeriesValue) {
-    const { thresholds, theme } = this.props;
-
-    if (thresholds.length === 1) {
-      return getColorFromHexRgbOrName(thresholds[0].color, theme.type);
-    }
-
-    const atThreshold = thresholds.filter(
-      threshold => (value as number) === threshold.value
-    )[0];
-    if (atThreshold) {
-      return getColorFromHexRgbOrName(atThreshold.color, theme.type);
-    }
-
-    const belowThreshold = thresholds.filter(
-      threshold => (value as number) > threshold.value
-    );
-
-    if (belowThreshold.length > 0) {
-      const nearestThreshold = belowThreshold.sort(
-        (t1, t2) => t2.value - t1.value
-      )[0];
-      return getColorFromHexRgbOrName(nearestThreshold.color, theme.type);
-    }
-
-    return BasicGaugeColor.Red;
-  }
-
   render() {
     const {
       onInterpolate,
@@ -54,19 +18,12 @@ export class BigTextLayout extends PureComponent<Props> {
       height,
       valueMappings,
       theme,
+      thresholds,
     } = this.props;
 
     const gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
     const prefix = onInterpolate(options.valueOptions.prefix);
     const suffix = onInterpolate(options.valueOptions.suffix);
-    let text = '';
-
-    if (valueMappings.length > 0) {
-      const valueMappedValue = getMappedValue(valueMappings, gaugeValue);
-      if (valueMappedValue) {
-        text = valueMappedValue.text;
-      }
-    }
 
     return (
       <div
@@ -84,9 +41,11 @@ export class BigTextLayout extends PureComponent<Props> {
               textAlign: 'center',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
-              color: this.getFontColor(gaugeValue),
             }}
-            text={text}
+            valueMappings={valueMappings}
+            thresholds={thresholds}
+            value={gaugeValue}
+            theme={theme}
           />
         </div>
         <div

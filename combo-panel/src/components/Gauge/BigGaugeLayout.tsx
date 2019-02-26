@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
-import { LayoutProps } from '../../types';
 import { Gauge, Graph, ValueMapping } from '@grafana/ui';
+
+import { Text } from '../Text/Text';
+
+import { LayoutProps } from '../../types';
 
 interface Props extends LayoutProps {}
 
@@ -14,6 +17,8 @@ export class BigGaugeLayout extends PureComponent<Props> {
       width,
       height,
       theme,
+      thresholds,
+      valueMappings,
     } = this.props;
 
     const gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
@@ -23,7 +28,7 @@ export class BigGaugeLayout extends PureComponent<Props> {
     return (
       <div style={{ display: 'flex', width: '100%', height: '100%' }}>
         <div style={{ width: '50%' }}>
-          <div
+          <Text
             style={{
               height: '30%',
               display: 'flex',
@@ -33,9 +38,13 @@ export class BigGaugeLayout extends PureComponent<Props> {
               overflow: 'hidden',
               whiteSpace: 'nowrap',
             }}
+            theme={theme}
+            thresholds={thresholds}
+            valueMappings={valueMappings}
+            value={gaugeValue}
           >
             Server ok
-          </div>
+          </Text>
           <div style={{ height: '70%' }}>
             <Graph
               timeSeries={timeSeries}
