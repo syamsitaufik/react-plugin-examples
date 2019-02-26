@@ -4,3 +4,14 @@ const vmSeries = processTimeSeries({
   nullValueMode: NullValueMode.Ignore,
 });
 
+onStatChange = evt => {
+    this.props.onChange({
+      ...this.props.options,
+      stat: evt.target.value,
+    });
+  };
+
+ <PanelOptionsGroup title="My options">
+        <FormField label="Stat" onChange={this.onStatChange} />
+      </PanelOptionsGroup>
+

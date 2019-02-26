@@ -99,7 +99,7 @@ define(["@grafana/ui","lodash","react"], function(__WEBPACK_EXTERNAL_MODULE__gra
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.reactPanel = exports.MyPanel = undefined;
+exports.reactPanel = exports.MyPanelEditorProps = exports.MyPanel = undefined;
 
 var _lodash = __webpack_require__(/*! lodash */ "lodash");
 
@@ -139,6 +139,22 @@ var __extends = undefined && undefined.__extends || function () {
   };
 }();
 
+var __assign = undefined && undefined.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
 var MyPanel =
 /** @class */
 function (_super) {
@@ -149,24 +165,53 @@ function (_super) {
   }
 
   MyPanel.prototype.render = function () {
+    var options = this.props.options;
     var timeSeries = this.props.panelData.timeSeries;
-
-    if (!timeSeries && !timeSeries.length) {
-      return _react2.default.createElement("div", null, "No data");
-    }
 
     var maxValue = _lodash2.default.maxBy(timeSeries[0].datapoints, function (v) {
       return v[0];
     })[0];
 
-    return _react2.default.createElement("h2", null, "Max: ", maxValue.toFixed(2));
+    return _react2.default.createElement("div", null, _react2.default.createElement("h2", null, "Stat: ", options.stat), _react2.default.createElement("h2", null, "Max: ", maxValue.toFixed(2)), ")");
   };
 
   return MyPanel;
 }(_react.PureComponent);
 
 exports.MyPanel = MyPanel;
+
+var MyPanelEditorProps =
+/** @class */
+function (_super) {
+  __extends(MyPanelEditorProps, _super);
+
+  function MyPanelEditorProps() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+    _this.onStatChange = function (evt) {
+      _this.props.onChange(__assign({}, _this.props.options, {
+        stat: evt.target.value
+      }));
+    };
+
+    return _this;
+  }
+
+  MyPanelEditorProps.prototype.render = function () {
+    return _react2.default.createElement(_ui.PanelOptionsGroup, {
+      title: "My options"
+    }, _react2.default.createElement(_ui.FormField, {
+      label: "Stat",
+      onChange: this.onStatChange
+    }));
+  };
+
+  return MyPanelEditorProps;
+}(_react.PureComponent);
+
+exports.MyPanelEditorProps = MyPanelEditorProps;
 var reactPanel = exports.reactPanel = new _ui.ReactPanelPlugin(MyPanel);
+reactPanel.setEditor(MyPanelEditorProps);
 
 /***/ }),
 
