@@ -3,7 +3,7 @@
   "name": "Workshop Panel",
   "id": "workshop-panel",
 
-  "dataFormats": [],
+  "dataFormats": ["time_series"],
 
   "info": {
     "description": "Grafana panel for rss feeds",

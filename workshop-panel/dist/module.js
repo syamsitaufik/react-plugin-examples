@@ -1,4 +1,4 @@
-define(["@grafana/ui","react"], function(__WEBPACK_EXTERNAL_MODULE__grafana_ui__, __WEBPACK_EXTERNAL_MODULE_react__) { return /******/ (function(modules) { // webpackBootstrap
+define(["@grafana/ui","lodash","react"], function(__WEBPACK_EXTERNAL_MODULE__grafana_ui__, __WEBPACK_EXTERNAL_MODULE_lodash__, __WEBPACK_EXTERNAL_MODULE_react__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -101,6 +101,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reactPanel = exports.MyPanel = undefined;
 
+var _lodash = __webpack_require__(/*! lodash */ "lodash");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _react = __webpack_require__(/*! react */ "react");
 
 var _react2 = _interopRequireDefault(_react);
@@ -145,7 +149,17 @@ function (_super) {
   }
 
   MyPanel.prototype.render = function () {
-    return _react2.default.createElement("div", null, "Hello from my panel");
+    var timeSeries = this.props.panelData.timeSeries;
+
+    if (!timeSeries && !timeSeries.length) {
+      return _react2.default.createElement("div", null, "No data");
+    }
+
+    var maxValue = _lodash2.default.maxBy(timeSeries[0].datapoints, function (v) {
+      return v[0];
+    })[0];
+
+    return _react2.default.createElement("h2", null, "Max: ", maxValue.toFixed(2));
   };
 
   return MyPanel;
@@ -164,6 +178,17 @@ var reactPanel = exports.reactPanel = new _ui.ReactPanelPlugin(MyPanel);
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_ui__;
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_lodash__;
 
 /***/ }),
 

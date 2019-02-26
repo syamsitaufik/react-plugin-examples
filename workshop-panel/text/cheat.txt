@@ -1,0 +1,6 @@
+
+const vmSeries = processTimeSeries({
+  timeSeries: timeSeries,
+  nullValueMode: NullValueMode.Ignore,
+});
+
