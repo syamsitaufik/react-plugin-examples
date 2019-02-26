@@ -173,13 +173,28 @@ function (_super) {
     })[0];
 
     var formatFunc = (0, _ui.getValueFormat)('ms');
+    var thresholds = [{
+      index: 0,
+      value: -Infinity,
+      color: 'green'
+    }, {
+      index: 0,
+      value: 80,
+      color: 'red'
+    }];
     return _react2.default.createElement("div", {
       className: "center-vh"
     }, _react2.default.createElement("h1", {
       style: {
         fontSize: '80px'
       }
-    }, options.bigText), _react2.default.createElement("h2", null, "Max: ", formatFunc(maxValue)));
+    }, options.bigText), _react2.default.createElement("h2", null, "Max: ", formatFunc(maxValue)), _react2.default.createElement(_ui.Gauge, {
+      width: 200,
+      height: 300,
+      unit: "ms",
+      value: maxValue,
+      thresholds: thresholds
+    }));
   };
 
   return MyPanel;

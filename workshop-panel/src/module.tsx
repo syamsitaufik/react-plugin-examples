@@ -7,6 +7,7 @@ import {
   PanelOptionsGroup,
   FormField,
   getValueFormat,
+  Gauge,
 } from '@grafana/ui';
 
 export class MyPanel extends PureComponent<PanelProps<MyPanelOptions>> {
@@ -16,11 +17,13 @@ export class MyPanel extends PureComponent<PanelProps<MyPanelOptions>> {
 
     const maxValue = _.maxBy(timeSeries[0].datapoints, v => v[0])[0];
     const formatFunc = getValueFormat('ms');
+    const thresholds = [{ index: 0, value: -Infinity, color: 'green' }, { index: 0, value: 80, color: 'red' }];
 
     return (
       <div className="center-vh">
         <h1 style={{ fontSize: '80px' }}>{options.bigText}</h1>
         <h2>Max: {formatFunc(maxValue)}</h2>
+        <Gauge width={200} height={300} unit="ms" value={maxValue} thresholds={thresholds} />
       </div>
     );
   }

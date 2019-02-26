@@ -36,3 +36,7 @@ export class MyPanel extends PureComponent<PanelProps<MyPanelOptions>> {
     );
   }
 }
+
+    const thresholds = [{ index: 0, value: -Infinity, color: 'green' }, { index: 0, value: 80, color: 'red' }];
+ 
+    <Gauge width={200} height={300} unit="ms" value={maxValue} thresholds={thresholds} />
