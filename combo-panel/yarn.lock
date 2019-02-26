@@ -180,10 +180,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@grafana/ui@1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-1.0.0-alpha.0.tgz#998498c40bebf8ed2568d679f4bd12586227db92"
-  integrity sha512-Jw4/VA+X0ISkCFD6uufSOz39EoDe0yOEdVMQXDlqqHgA/ZnfWMvnJt74XLszdThMr3U5YNrmXXFpQbCxYV1Kyw==
+"@grafana/ui@6.0.1-alpha.0":
+  version "6.0.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-6.0.1-alpha.0.tgz#d3db9e4d3e35584a53425b1e51fcabb6cea67ac7"
+  integrity sha512-NBZpsGMlpcCiAl5Njij86sOGirC5VhQ0mMnxzFb/IuiiVKUIM0sfWaFBcnsvBviWZFmzPaNlOXzHStBW8hvhqw==
   dependencies:
     "@torkelo/react-select" "2.1.1"
     "@types/react-color" "^2.14.0"

@@ -86,146 +86,6 @@ define(["@grafana/ui","react"], function(__WEBPACK_EXTERNAL_MODULE__grafana_ui__
 /************************************************************************/
 /******/ ({
 
-/***/ "./components/BigTextLayout.tsx":
-/*!**************************************!*\
-  !*** ./components/BigTextLayout.tsx ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.BigTextLayout = undefined;
-
-var _react = __webpack_require__(/*! react */ "react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __extends = undefined && undefined.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var BigTextLayout =
-/** @class */
-function (_super) {
-  __extends(BigTextLayout, _super);
-
-  function BigTextLayout() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
-
-  BigTextLayout.prototype.render = function () {
-    var _a = this.props,
-        onInterpolate = _a.onInterpolate,
-        options = _a.options,
-        timeSeries = _a.timeSeries,
-        timeRange = _a.timeRange,
-        width = _a.width,
-        height = _a.height;
-    var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
-    var prefix = onInterpolate(options.valueOptions.prefix);
-    var suffix = onInterpolate(options.valueOptions.suffix);
-    return _react2.default.createElement("div", {
-      style: {
-        display: 'flex',
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column'
-      }
-    }, _react2.default.createElement("div", {
-      style: {
-        height: '40%',
-        width: '100%'
-      }
-    }, _react2.default.createElement("div", {
-      style: {
-        fontSize: '60px',
-        textAlign: 'center',
-        overflow: 'hidden',
-        whiteSpace: 'nowrap'
-      }
-    }, "Server ok")), _react2.default.createElement("div", {
-      style: {
-        height: '60%',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'flex-end'
-      }
-    }, _react2.default.createElement("div", {
-      style: {
-        width: '60%',
-        height: '100%'
-      }
-    }, _react2.default.createElement(_ui.Graph, {
-      timeSeries: timeSeries,
-      timeRange: timeRange,
-      width: width,
-      height: height,
-      showBars: options.showBars,
-      showLines: options.showLines,
-      showPoints: options.showPoints
-    })), _react2.default.createElement("div", {
-      style: {
-        width: '40%',
-        height: '100%'
-      }
-    }, _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
-      return _react2.default.createElement(_ui.Gauge, {
-        value: gaugeValue,
-        width: width / 3,
-        height: height * 0.6,
-        prefix: prefix,
-        suffix: suffix,
-        unit: options.valueOptions.unit,
-        decimals: options.valueOptions.decimals,
-        thresholds: options.thresholds,
-        valueMappings: options.valueMappings,
-        showThresholdLabels: options.showThresholdLabels,
-        showThresholdMarkers: options.showThresholdMarkers,
-        minValue: options.minValue,
-        maxValue: options.maxValue,
-        theme: theme
-      });
-    }))));
-  };
-
-  return BigTextLayout;
-}(_react.PureComponent);
-
-exports.BigTextLayout = BigTextLayout;
-
-/***/ }),
-
 /***/ "./components/ComboPanel.tsx":
 /*!***********************************!*\
   !*** ./components/ComboPanel.tsx ***!
@@ -247,7 +107,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 
-var _BigTextLayout = __webpack_require__(/*! ./BigTextLayout */ "./components/BigTextLayout.tsx");
+var _BigTextLayout = __webpack_require__(/*! ./Text/BigTextLayout */ "./components/Text/BigTextLayout.tsx");
 
 var _BigGaugeLayout = __webpack_require__(/*! ./Gauge/BigGaugeLayout */ "./components/Gauge/BigGaugeLayout.tsx");
 
@@ -299,44 +159,61 @@ function (_super) {
         timeRange = _a.timeRange,
         width = _a.width,
         height = _a.height;
-    var layout = options.layout;
+    var layout = options.layout,
+        valueMappings = options.valueMappings,
+        thresholds = options.thresholds;
 
     if (panelData.timeSeries) {
-      var timeSeries = (0, _ui.processTimeSeries)({
+      var timeSeries_1 = (0, _ui.processTimeSeries)({
         timeSeries: panelData.timeSeries,
         nullValueMode: _ui.NullValueMode.Null
       });
 
       switch (layout) {
         case 'bigtext':
-          return _react2.default.createElement(_BigTextLayout.BigTextLayout, {
-            timeSeries: timeSeries,
-            timeRange: timeRange,
-            width: width,
-            height: height,
-            options: options,
-            onInterpolate: onInterpolate
+          return _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
+            return _react2.default.createElement(_BigTextLayout.BigTextLayout, {
+              timeSeries: timeSeries_1,
+              timeRange: timeRange,
+              width: width,
+              height: height,
+              options: options,
+              onInterpolate: onInterpolate,
+              valueMappings: valueMappings,
+              thresholds: thresholds,
+              theme: theme
+            });
           });
 
         case 'biggraph':
-          return _react2.default.createElement(_BigGraphLayout.BigGraphLayout, {
-            timeSeries: timeSeries,
-            timeRange: timeRange,
-            width: width,
-            height: height,
-            options: options,
-            onInterpolate: onInterpolate
+          return _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
+            return _react2.default.createElement(_BigGraphLayout.BigGraphLayout, {
+              timeSeries: timeSeries_1,
+              timeRange: timeRange,
+              width: width,
+              height: height,
+              options: options,
+              onInterpolate: onInterpolate,
+              theme: theme,
+              valueMappings: valueMappings,
+              thresholds: thresholds
+            });
           });
 
         default:
         case 'biggauge':
-          return _react2.default.createElement(_BigGaugeLayout.BigGaugeLayout, {
-            timeSeries: timeSeries,
-            timeRange: timeRange,
-            width: width,
-            height: height,
-            options: options,
-            onInterpolate: onInterpolate
+          return _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
+            return _react2.default.createElement(_BigGaugeLayout.BigGaugeLayout, {
+              timeSeries: timeSeries_1,
+              timeRange: timeRange,
+              width: width,
+              height: height,
+              options: options,
+              onInterpolate: onInterpolate,
+              theme: theme,
+              thresholds: thresholds,
+              valueMappings: valueMappings
+            });
           });
       }
     } else {
@@ -445,8 +322,14 @@ function (_super) {
     };
 
     _this.onThresholdsChanged = function (thresholds) {
-      return _this.props.onChange(__assign({}, _this.props.options, {
+      _this.props.onChange(__assign({}, _this.props.options, {
         thresholds: thresholds
+      }));
+    };
+
+    _this.onValueMappingsChanged = function (valueMappings) {
+      return _this.props.onChange(__assign({}, _this.props.options, {
+        valueMappings: valueMappings
       }));
     };
 
@@ -454,11 +337,7 @@ function (_super) {
   }
 
   ComboPanelEditor.prototype.render = function () {
-    var _this = this; // Options for Gauge (thresholds etc), Graph (lines, bars, points)
-    // and Text (size color etc)
-    // Options for resizing the sections, choose layout? ✅
-    // Combine Thresholds and text (+ color)
-
+    var _this = this;
 
     var _a = this.props,
         options = _a.options,
@@ -470,6 +349,9 @@ function (_super) {
         return _this.onLayoutChange(layout);
       },
       selectedLayout: layout
+    }), _react2.default.createElement(_GraphOptions.GraphOptions, {
+      options: options,
+      onChange: onChange
     })), _react2.default.createElement(_ui.PanelOptionsGrid, null, _react2.default.createElement(_ValueOptions.ValueOptions, {
       options: valueOptions,
       onChange: function onChange(valueOptions) {
@@ -483,10 +365,10 @@ function (_super) {
       onChange: function onChange(thresholds) {
         return _this.onThresholdsChanged(thresholds);
       }
-    })), _react2.default.createElement(_ui.PanelOptionsGrid, null, _react2.default.createElement(_GraphOptions.GraphOptions, {
-      options: options,
-      onChange: onChange
-    })));
+    })), _react2.default.createElement(_ui.ValueMappingsEditor, {
+      valueMappings: options.valueMappings,
+      onChange: this.onValueMappingsChanged
+    }));
   };
 
   return ComboPanelEditor;
@@ -561,7 +443,8 @@ function (_super) {
         timeSeries = _a.timeSeries,
         timeRange = _a.timeRange,
         width = _a.width,
-        height = _a.height;
+        height = _a.height,
+        theme = _a.theme;
     var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
     var prefix = onInterpolate(options.valueOptions.prefix);
     var suffix = onInterpolate(options.valueOptions.suffix);
@@ -603,23 +486,21 @@ function (_super) {
         display: 'flex',
         justifyContent: 'flex-end'
       }
-    }, _react2.default.createElement(_ui.ThemeContext.Consumer, null, function (theme) {
-      return _react2.default.createElement(_ui.Gauge, {
-        value: gaugeValue,
-        width: width / 2,
-        height: height,
-        prefix: prefix,
-        suffix: suffix,
-        unit: options.valueOptions.unit,
-        decimals: options.valueOptions.decimals,
-        thresholds: options.thresholds,
-        valueMappings: options.valueMappings,
-        showThresholdLabels: options.showThresholdLabels,
-        showThresholdMarkers: options.showThresholdMarkers,
-        minValue: options.minValue,
-        maxValue: options.maxValue,
-        theme: theme
-      });
+    }, _react2.default.createElement(_ui.Gauge, {
+      value: gaugeValue,
+      width: width / 2,
+      height: height,
+      prefix: prefix,
+      suffix: suffix,
+      unit: options.valueOptions.unit,
+      decimals: options.valueOptions.decimals,
+      thresholds: options.thresholds,
+      valueMappings: [],
+      showThresholdLabels: options.showThresholdLabels,
+      showThresholdMarkers: options.showThresholdMarkers,
+      minValue: options.minValue,
+      maxValue: options.maxValue,
+      theme: theme
     })));
   };
 
@@ -1098,7 +979,7 @@ function (_super) {
         unit: options.valueOptions.unit,
         decimals: options.valueOptions.decimals,
         thresholds: options.thresholds,
-        valueMappings: options.valueMappings,
+        valueMappings: [],
         showThresholdLabels: options.showThresholdLabels,
         showThresholdMarkers: options.showThresholdMarkers,
         minValue: options.minValue,
@@ -1320,7 +1201,8 @@ function (_super) {
       title: "Layout"
     }, _react2.default.createElement("div", {
       style: {
-        display: 'flex'
+        display: 'flex',
+        justifyContent: 'space-evenly'
       }
     }, layoutOptions.map(function (layout, index) {
       var isActive = selectedLayout === layout.value;
@@ -1330,7 +1212,6 @@ function (_super) {
           return onChange(layout.value);
         },
         style: {
-          margin: '0 8px',
           padding: '10px',
           border: '1px solid white',
           borderRadius: '3px',
@@ -1347,6 +1228,222 @@ function (_super) {
 }(_react.PureComponent);
 
 exports.LayoutOptions = LayoutOptions;
+
+/***/ }),
+
+/***/ "./components/Text/BigTextLayout.tsx":
+/*!*******************************************!*\
+  !*** ./components/Text/BigTextLayout.tsx ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BigTextLayout = undefined;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ui = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
+
+var _Text = __webpack_require__(/*! ./Text */ "./components/Text/Text.tsx");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __extends = undefined && undefined.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var BigTextLayout =
+/** @class */
+function (_super) {
+  __extends(BigTextLayout, _super);
+
+  function BigTextLayout() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  BigTextLayout.prototype.getFontColor = function (value) {
+    var _a = this.props,
+        thresholds = _a.thresholds,
+        theme = _a.theme;
+
+    if (thresholds.length === 1) {
+      return (0, _ui.getColorFromHexRgbOrName)(thresholds[0].color, theme.type);
+    }
+
+    var atThreshold = thresholds.filter(function (threshold) {
+      return value === threshold.value;
+    })[0];
+
+    if (atThreshold) {
+      return (0, _ui.getColorFromHexRgbOrName)(atThreshold.color, theme.type);
+    }
+
+    var belowThreshold = thresholds.filter(function (threshold) {
+      return value > threshold.value;
+    });
+
+    if (belowThreshold.length > 0) {
+      var nearestThreshold = belowThreshold.sort(function (t1, t2) {
+        return t2.value - t1.value;
+      })[0];
+      return (0, _ui.getColorFromHexRgbOrName)(nearestThreshold.color, theme.type);
+    }
+
+    return _ui.BasicGaugeColor.Red;
+  };
+
+  BigTextLayout.prototype.render = function () {
+    var _a = this.props,
+        onInterpolate = _a.onInterpolate,
+        options = _a.options,
+        timeSeries = _a.timeSeries,
+        timeRange = _a.timeRange,
+        width = _a.width,
+        height = _a.height,
+        valueMappings = _a.valueMappings,
+        theme = _a.theme;
+    var gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
+    var prefix = onInterpolate(options.valueOptions.prefix);
+    var suffix = onInterpolate(options.valueOptions.suffix);
+    var text = '';
+
+    if (valueMappings.length > 0) {
+      var valueMappedValue = (0, _ui.getMappedValue)(valueMappings, gaugeValue);
+
+      if (valueMappedValue) {
+        text = valueMappedValue.text;
+      }
+    }
+
+    return _react2.default.createElement("div", {
+      style: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column'
+      }
+    }, _react2.default.createElement("div", {
+      style: {
+        height: '40%',
+        width: '100%'
+      }
+    }, _react2.default.createElement(_Text.Text, {
+      style: {
+        fontSize: '60px',
+        textAlign: 'center',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        color: this.getFontColor(gaugeValue)
+      },
+      text: text
+    })), _react2.default.createElement("div", {
+      style: {
+        height: '60%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-end'
+      }
+    }, _react2.default.createElement("div", {
+      style: {
+        width: '60%',
+        height: '100%'
+      }
+    }, _react2.default.createElement(_ui.Graph, {
+      timeSeries: timeSeries,
+      timeRange: timeRange,
+      width: width,
+      height: height,
+      showBars: options.showBars,
+      showLines: options.showLines,
+      showPoints: options.showPoints
+    })), _react2.default.createElement("div", {
+      style: {
+        width: '40%',
+        height: '100%'
+      }
+    }, _react2.default.createElement(_ui.Gauge, {
+      value: gaugeValue,
+      width: width / 3,
+      height: height * 0.6,
+      prefix: prefix,
+      suffix: suffix,
+      unit: options.valueOptions.unit,
+      decimals: options.valueOptions.decimals,
+      thresholds: options.thresholds,
+      valueMappings: [],
+      showThresholdLabels: options.showThresholdLabels,
+      showThresholdMarkers: options.showThresholdMarkers,
+      minValue: options.minValue,
+      maxValue: options.maxValue,
+      theme: theme
+    }))));
+  };
+
+  return BigTextLayout;
+}(_react.PureComponent);
+
+exports.BigTextLayout = BigTextLayout;
+
+/***/ }),
+
+/***/ "./components/Text/Text.tsx":
+/*!**********************************!*\
+  !*** ./components/Text/Text.tsx ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Text = undefined;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Text = exports.Text = function Text(_a) {
+  var style = _a.style,
+      text = _a.text;
+  return _react2.default.createElement("div", {
+    style: style
+  }, text);
+};
 
 /***/ }),
 

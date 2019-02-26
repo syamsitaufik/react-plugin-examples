@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { LayoutProps } from '../../types';
-import { Gauge, Graph, ThemeContext } from '@grafana/ui';
+import { Gauge, Graph, ThemeContext, ValueMapping } from '@grafana/ui';
 
 interface Props extends LayoutProps {}
 
@@ -59,7 +59,7 @@ export class BigGraphLayout extends PureComponent<Props> {
                     unit={options.valueOptions.unit}
                     decimals={options.valueOptions.decimals}
                     thresholds={options.thresholds}
-                    valueMappings={options.valueMappings}
+                    valueMappings={[] as ValueMapping[]}
                     showThresholdLabels={options.showThresholdLabels}
                     showThresholdMarkers={options.showThresholdMarkers}
                     minValue={options.minValue}

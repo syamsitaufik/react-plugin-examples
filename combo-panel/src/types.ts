@@ -1,4 +1,10 @@
-import { Threshold, TimeRange, TimeSeriesVMs, ValueMapping } from '@grafana/ui';
+import {
+  GrafanaTheme,
+  Threshold,
+  TimeRange,
+  TimeSeriesVMs,
+  ValueMapping,
+} from '@grafana/ui';
 
 export interface ComboOptions {
   valueMappings: ValueMapping[];
@@ -49,4 +55,7 @@ export interface LayoutProps {
   height: number;
   options: ComboOptions;
   onInterpolate: (value: string, format?: string) => string;
+  theme: GrafanaTheme;
+  valueMappings: ValueMapping[];
+  thresholds: Threshold[];
 }

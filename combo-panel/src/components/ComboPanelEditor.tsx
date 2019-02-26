@@ -2,16 +2,18 @@ import React, { PureComponent } from 'react';
 import {
   PanelEditorProps,
   PanelOptionsGrid,
+  ValueMappingsEditor,
   Threshold,
   ThresholdsEditor,
+  ValueMapping,
 } from '@grafana/ui';
 
 import { LayoutOptions } from './LayoutOptions';
 import { ValueOptions } from './Gauge/ValueOptions';
-
-import { ComboOptions, SingleStatValueOptions } from '../types';
 import { GaugeOptionsEditor } from './Gauge/GaugeOptionsEditor';
 import { GraphOptions } from './Graph/GraphOptions';
+
+import { ComboOptions, SingleStatValueOptions } from '../types';
 
 export class ComboPanelEditor extends PureComponent<
   PanelEditorProps<ComboOptions>
@@ -25,17 +27,20 @@ export class ComboPanelEditor extends PureComponent<
       valueOptions,
     });
 
-  onThresholdsChanged = (thresholds: Threshold[]) =>
+  onThresholdsChanged = (thresholds: Threshold[]) => {
     this.props.onChange({
       ...this.props.options,
       thresholds,
     });
+  };
+
+  onValueMappingsChanged = (valueMappings: ValueMapping[]) =>
+    this.props.onChange({
+      ...this.props.options,
+      valueMappings,
+    });
 
   render() {
-    // Options for Gauge (thresholds etc), Graph (lines, bars, points)
-    // and Text (size color etc)
-    // Options for resizing the sections, choose layout? ✅
-    // Combine Thresholds and text (+ color)
     const { options, onChange } = this.props;
     const { layout, valueOptions } = options;
 
@@ -46,6 +51,7 @@ export class ComboPanelEditor extends PureComponent<
             onChange={layout => this.onLayoutChange(layout)}
             selectedLayout={layout}
           />
+          <GraphOptions options={options} onChange={onChange} />
         </PanelOptionsGrid>
         <PanelOptionsGrid>
           <ValueOptions
@@ -58,9 +64,10 @@ export class ComboPanelEditor extends PureComponent<
             onChange={thresholds => this.onThresholdsChanged(thresholds)}
           />
         </PanelOptionsGrid>
-        <PanelOptionsGrid>
-          <GraphOptions options={options} onChange={onChange} />
-        </PanelOptionsGrid>
+        <ValueMappingsEditor
+          valueMappings={options.valueMappings}
+          onChange={this.onValueMappingsChanged}
+        />
       </>
     );
   }

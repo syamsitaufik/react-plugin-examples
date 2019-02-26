@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { LayoutProps } from '../../types';
-import { Gauge, Graph, ThemeContext } from '@grafana/ui';
+import { Gauge, Graph, ValueMapping } from '@grafana/ui';
 
 interface Props extends LayoutProps {}
 
@@ -13,6 +13,7 @@ export class BigGaugeLayout extends PureComponent<Props> {
       timeRange,
       width,
       height,
+      theme,
     } = this.props;
 
     const gaugeValue = timeSeries[0].stats[options.valueOptions.stat];
@@ -54,28 +55,22 @@ export class BigGaugeLayout extends PureComponent<Props> {
             justifyContent: 'flex-end',
           }}
         >
-          <ThemeContext.Consumer>
-            {theme => {
-              return (
-                <Gauge
-                  value={gaugeValue}
-                  width={width / 2}
-                  height={height}
-                  prefix={prefix}
-                  suffix={suffix}
-                  unit={options.valueOptions.unit}
-                  decimals={options.valueOptions.decimals}
-                  thresholds={options.thresholds}
-                  valueMappings={options.valueMappings}
-                  showThresholdLabels={options.showThresholdLabels}
-                  showThresholdMarkers={options.showThresholdMarkers}
-                  minValue={options.minValue}
-                  maxValue={options.maxValue}
-                  theme={theme}
-                />
-              );
-            }}
-          </ThemeContext.Consumer>
+          <Gauge
+            value={gaugeValue}
+            width={width / 2}
+            height={height}
+            prefix={prefix}
+            suffix={suffix}
+            unit={options.valueOptions.unit}
+            decimals={options.valueOptions.decimals}
+            thresholds={options.thresholds}
+            valueMappings={[] as ValueMapping[]}
+            showThresholdLabels={options.showThresholdLabels}
+            showThresholdMarkers={options.showThresholdMarkers}
+            minValue={options.minValue}
+            maxValue={options.maxValue}
+            theme={theme}
+          />
         </div>
       </div>
     );

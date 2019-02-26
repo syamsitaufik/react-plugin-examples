@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react';
-import { NullValueMode, PanelProps, processTimeSeries } from '@grafana/ui';
+import {
+  NullValueMode,
+  PanelProps,
+  processTimeSeries,
+  ThemeContext,
+} from '@grafana/ui';
 
 import { ComboOptions } from '../types';
-import { BigTextLayout } from './BigTextLayout';
+import { BigTextLayout } from './Text/BigTextLayout';
 import { BigGaugeLayout } from './Gauge/BigGaugeLayout';
 import { BigGraphLayout } from './Graph/BigGraphLayout';
 
@@ -21,7 +26,7 @@ export class ComboPanel extends PureComponent<Props> {
       height,
     } = this.props;
 
-    const { layout } = options;
+    const { layout, valueMappings, thresholds } = options;
 
     if (panelData.timeSeries) {
       const timeSeries = processTimeSeries({
@@ -32,39 +37,66 @@ export class ComboPanel extends PureComponent<Props> {
       switch (layout) {
         case 'bigtext':
           return (
-            <BigTextLayout
-              timeSeries={timeSeries}
-              timeRange={timeRange}
-              width={width}
-              height={height}
-              options={options}
-              onInterpolate={onInterpolate}
-            />
+            <ThemeContext.Consumer>
+              {theme => {
+                return (
+                  <BigTextLayout
+                    timeSeries={timeSeries}
+                    timeRange={timeRange}
+                    width={width}
+                    height={height}
+                    options={options}
+                    onInterpolate={onInterpolate}
+                    valueMappings={valueMappings}
+                    thresholds={thresholds}
+                    theme={theme}
+                  />
+                );
+              }}
+            </ThemeContext.Consumer>
           );
 
         case 'biggraph':
           return (
-            <BigGraphLayout
-              timeSeries={timeSeries}
-              timeRange={timeRange}
-              width={width}
-              height={height}
-              options={options}
-              onInterpolate={onInterpolate}
-            />
+            <ThemeContext.Consumer>
+              {theme => {
+                return (
+                  <BigGraphLayout
+                    timeSeries={timeSeries}
+                    timeRange={timeRange}
+                    width={width}
+                    height={height}
+                    options={options}
+                    onInterpolate={onInterpolate}
+                    theme={theme}
+                    valueMappings={valueMappings}
+                    thresholds={thresholds}
+                  />
+                );
+              }}
+            </ThemeContext.Consumer>
           );
 
         default:
         case 'biggauge':
           return (
-            <BigGaugeLayout
-              timeSeries={timeSeries}
-              timeRange={timeRange}
-              width={width}
-              height={height}
-              options={options}
-              onInterpolate={onInterpolate}
-            />
+            <ThemeContext.Consumer>
+              {theme => {
+                return (
+                  <BigGaugeLayout
+                    timeSeries={timeSeries}
+                    timeRange={timeRange}
+                    width={width}
+                    height={height}
+                    options={options}
+                    onInterpolate={onInterpolate}
+                    theme={theme}
+                    thresholds={thresholds}
+                    valueMappings={valueMappings}
+                  />
+                );
+              }}
+            </ThemeContext.Consumer>
           );
       }
     } else {

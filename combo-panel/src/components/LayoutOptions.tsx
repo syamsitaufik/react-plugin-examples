@@ -22,6 +22,7 @@ export class LayoutOptions extends PureComponent<Props> {
         <div
           style={{
             display: 'flex',
+            justifyContent: 'space-evenly',
           }}
         >
           {layoutOptions.map((layout, index) => {
@@ -31,7 +32,6 @@ export class LayoutOptions extends PureComponent<Props> {
                 key={`${layout.value}-${index}`}
                 onClick={() => onChange(layout.value)}
                 style={{
-                  margin: '0 8px',
                   padding: '10px',
                   border: '1px solid white',
                   borderRadius: '3px',
