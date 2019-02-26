@@ -172,7 +172,14 @@ function (_super) {
       return v[0];
     })[0];
 
-    return _react2.default.createElement("div", null, _react2.default.createElement("h2", null, "Stat: ", options.stat), _react2.default.createElement("h2", null, "Max: ", maxValue.toFixed(2)), ")");
+    var formatFunc = (0, _ui.getValueFormat)('ms');
+    return _react2.default.createElement("div", {
+      className: "center-vh"
+    }, _react2.default.createElement("h1", {
+      style: {
+        fontSize: '80px'
+      }
+    }, options.bigText), _react2.default.createElement("h2", null, "Max: ", formatFunc(maxValue)));
   };
 
   return MyPanel;
@@ -188,9 +195,9 @@ function (_super) {
   function MyPanelEditorProps() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.onStatChange = function (evt) {
+    _this.onBigTextChanged = function (evt) {
       _this.props.onChange(__assign({}, _this.props.options, {
-        stat: evt.target.value
+        bigText: evt.target.value
       }));
     };
 
@@ -198,11 +205,13 @@ function (_super) {
   }
 
   MyPanelEditorProps.prototype.render = function () {
+    var bigText = this.props.options.bigText;
     return _react2.default.createElement(_ui.PanelOptionsGroup, {
       title: "My options"
     }, _react2.default.createElement(_ui.FormField, {
-      label: "Stat",
-      onChange: this.onStatChange
+      label: "Big text",
+      onChange: this.onBigTextChanged,
+      value: bigText
     }));
   };
 
@@ -212,6 +221,9 @@ function (_super) {
 exports.MyPanelEditorProps = MyPanelEditorProps;
 var reactPanel = exports.reactPanel = new _ui.ReactPanelPlugin(MyPanel);
 reactPanel.setEditor(MyPanelEditorProps);
+reactPanel.setDefaults({
+  bigText: 'GrafanaCon'
+});
 
 /***/ }),
 
